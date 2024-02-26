@@ -58,7 +58,7 @@ Route::controller(AdminController::class)->group(function () {
 
 Route::controller(RiwayatController::class)->group(function () {
     Route::post('/karyawan/Pengajuan-Pemberhentian/{id}/action', 'pengajuan')->name('karyawan.berhenti');
-    Route::post('/karyawan/Batal-Pemberhentian/{id}/action', 'batal')->name('karyawan.batal');
+    Route::post('/karyawan/Batal-Pemberhentian/{nik}/action', 'batal')->name('karyawan.batal');
 });
 
 Route::get('/logout', [

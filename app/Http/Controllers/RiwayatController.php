@@ -12,7 +12,7 @@ class RiwayatController extends Controller
 {
     public function pengajuan($id)
     {
-        $karyawan = Riwayat::findofFail($id);
+        $karyawan = Riwayat::where('id', $id)->first();
         // $karyawan = Riwayat::where('nik', $nik)->where('status', 'masih bekerja')->first();
 
         $user = Auth::user();
@@ -25,10 +25,11 @@ class RiwayatController extends Controller
         return redirect()->route('karyawan.view', $karyawan_id);
     }
 
-    public function batal($nik)
+    public function batal($id)
     {
-        $karyawan = Riwayat::where('nik', $nik)->where('status', 'menunggu')->first();
+        $karyawan = Riwayat::where('id', $id)->first();
 
+        // Memeriksa apakah riwayat karyawan ditemukan
         $user = Auth::user();
         $karyawan_id = Karyawan::where('nik', $user->niknpwp)->value('id');
 

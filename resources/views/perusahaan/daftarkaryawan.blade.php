@@ -62,8 +62,8 @@
                                                 {{ $karyawan->gender }}
                                             </td>
                                             <td class="px-6 py-4">
-                                                @if (isset($riwayats[$loop->iteration-1]))
-                                                    {{ $riwayats[$loop->iteration-1]->mulai }}
+                                                @if (isset($riwayats[$loop->iteration - 1]))
+                                                    {{ $riwayats[$loop->iteration - 1]->mulai }}
                                                 @else
                                                     Riwayat tidak tersedia
                                                 @endif
@@ -75,11 +75,23 @@
                                                         <button
                                                             class="px-4 py-2 bg-yellow-300 rounded-md text-black hover:bg-yellow-500 hover:text-white font-semibold">Ubah</button>
                                                     </a> --}}
-                                                    <form action="" method="post">
-                                                        @csrf
-                                                        <button
-                                                            class="px-4 py-2 bg-red-600 rounded-md text-black hover:bg-red-800 hover:text-white font-semibold">Hapus</button>
-                                                    </form>
+                                                    @if (isset($riwayats[$loop->iteration - 1]))
+                                                        @if ($riwayats[$loop->iteration - 1]->status == 'menunggu')
+                                                            <form action="" method="post">
+                                                                @csrf
+                                                                <button
+                                                                    class="px-4 py-2 bg-red-600 rounded-md text-black hover:bg-red-800 hover:text-white font-semibold">Terima Ajuan</button>
+                                                            </form>
+                                                        @elseif ($riwayats[$loop->iteration - 1]->status == 'masih bekerja')
+                                                            <form action="" method="post">
+                                                                @csrf
+                                                                <button
+                                                                    class="px-4 py-2 bg-red-600 rounded-md text-black hover:bg-red-800 hover:text-white font-semibold">Berhentikan</button>
+                                                            </form>
+                                                        @endif
+                                                    @else
+                                                        Riwayat tidak tersedia
+                                                    @endif
                                                 </div>
                                             </td>
                                         </tr>

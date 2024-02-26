@@ -76,7 +76,7 @@
                                     <button type="submit" name="ubah"
                                         class="bg-yellow-400 px-4 py-1 rounded-lg">Ubah</button>
                     </form>
-                    <form action="{{ route('karyawan.batal', $riwayat->id) }}" method="post">
+                    <form action="{{ route('karyawan.batal', $riwayat->id, $riwayat->status) }}" method="post">
                         @csrf
                         <button type="submit" class="bg-red-600 px-4 py-1 rounded-lg">Batal Pemberhentian</button>
                     </form>
