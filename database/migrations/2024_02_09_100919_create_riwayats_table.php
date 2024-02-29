@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('riwayats', function (Blueprint $table) {
             $table->id();
             $table->string('nik');
-            $table->string('id_perusahaan');
+            $table->string('npwp_perusahaan');
             $table->string('mulai');
             $table->string('akhir');
             $table->string('status');

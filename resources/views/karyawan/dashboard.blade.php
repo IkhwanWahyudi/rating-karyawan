@@ -25,9 +25,15 @@
                                 class="w-fit bg-slate-200 rounded-md p-1"><br>
                         </div>
                         <div>
-                            <label for="">Perusahaan : </label>
-                            <input type="text" name="namaperusahaan" readonly value="{{ $perusahaan->nama }}"
-                                class="w-fit bg-slate-200 rounded-md p-1"><br>
+                            @if (isset($perusahaan))
+                                <label for="">Perusahaan : </label>
+                                <input type="text" name="namaperusahaan" readonly value="{{ $perusahaan->nama }}"
+                                    class="w-fit bg-slate-200 rounded-md p-1"><br>
+                            @else
+                                <label for="">Perusahaan : </label>
+                                <input type="text" name="namaperusahaan" readonly value="-"
+                                    class="w-fit bg-slate-200 rounded-md p-1"><br>
+                            @endif
                         </div>
                         <div>
                             <label for="">Tempat Lahir : </label>
@@ -58,15 +64,12 @@
                         </div>
                         <div>
                             <label for="">Pengalaman Kerja : </label> <br>
-                            @foreach ($riwayats as $riwayat)
-                                @if (isset($perusahaan_lama[$riwayat->id]))
+                            @foreach ($riwayats as $index => $riwayat)
+                                @if (isset($perusahaan_lama[$index]))
                                     <p>
-                                        {{ $perusahaan_lama[$riwayat]->nama }}, {{ $riwayat->mulai }} -
-                                        {{ $riwayat->akhir }}
-                                    </p><br>
-                                @else
-                                    <p>{{ $perusahaan->nama }}, {{ $riwayat->mulai }} -
-                                        {{ $riwayat->akhir }}</p><br>
+                                        {{ $perusahaan_lama[$index]->nama }}, {{ $riwayat->mulai }} -
+                                        {{ $riwayat->akhir }} ({{ $riwayat->status }})
+                                    </p>
                                 @endif
                             @endforeach
                         </div>

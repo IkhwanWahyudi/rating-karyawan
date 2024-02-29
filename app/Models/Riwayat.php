@@ -10,5 +10,5 @@ class Riwayat extends Model
     use HasFactory;
 
     protected $table = 'riwayats';
-    protected $fillable = ['nik', 'id_perusahaan', 'mulai', 'akhir', 'status'];
+    protected $fillable = ['nik', 'npwp_perusahaan', 'mulai', 'akhir', 'status'];
 }

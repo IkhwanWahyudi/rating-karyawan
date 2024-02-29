@@ -17,7 +17,21 @@ class KaryawanController extends Controller
     {
         $nikExist = Karyawan::where("nik", $request->nik)->first();
         if ($nikExist) {
-            return redirect()->route('detail')->with('error', 'NIK sudah terdaftar!');
+            $updateKaryawan = Karyawan::where("nik", $request->nik)->first();
+
+            $updateKaryawan->update([
+                'posisi' => $request->posisi,
+                'alamat' => $request->alamat,
+            ]);
+
+            Riwayat::create([
+                'nik' => $request->nik,
+                'npwp_perusahaan' => Auth::user()->niknpwp,
+                'mulai' => $request->mulai,
+                'akhir' => "Now",
+                'status' => "masih bekerja",
+            ]);
+            return redirect()->route('perusahaan')->with('success', 'Karyawan berhasil ditambahkan.');
         } else {
             // Validasi input, termasuk validasi gambar
             $validatedData = $request->validate([
@@ -34,7 +48,7 @@ class KaryawanController extends Controller
 
             Riwayat::create([
                 'nik' => $request->nik,
-                'id_perusahaan' => Auth::user()->id,
+                'npwp_perusahaan' => Auth::user()->niknpwp,
                 'mulai' => $request->mulai,
                 'akhir' => "Now",
                 'status' => "masih bekerja",
@@ -53,16 +67,18 @@ class KaryawanController extends Controller
     public function view($id)
     {
         $nik = Auth::user()->niknpwp;
-        $id_perusahaan_sekarang = Riwayat::where('nik', $nik)
+        $npwp_perusahaan_sekarang = Riwayat::where('nik', $nik)
             ->whereIn('status', ['masih bekerja', 'menunggu'])
-            ->value('id_perusahaan');
-        $id_perusahaan_lama = Riwayat::where('nik', $nik)
-            ->value('id_perusahaan');
-        $perusahaan = Perusahaan::where('id', $id_perusahaan_sekarang)->first();
-        $perusahaan_lama = Perusahaan::where('id', $id_perusahaan_lama)->get();
+            ->value('npwp_perusahaan');
+        $npwp_perusahaan_lama = Riwayat::where('nik', $nik)
+            ->whereIn('status', ['Baik', 'Buruk', 'tunggu review'])
+            ->pluck('npwp_perusahaan');
+        $perusahaan = Perusahaan::where('npwp', $npwp_perusahaan_sekarang)->first();
+        $perusahaan_lama = Perusahaan::whereIn('npwp', $npwp_perusahaan_lama)->orderBy('created_at', 'desc')->get();
         $karyawan = Karyawan::all()->where('nik', $nik)->first();
         $riwayat = Riwayat::where('nik', $nik)
-            ->orderBy('mulai', 'desc')
+            ->whereNot('akhir', 'Now')
+            ->orderBy('created_at', 'desc')
             ->get();
 
         $tahunLahir = date('Y', strtotime($karyawan->lahir));

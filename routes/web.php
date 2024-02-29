@@ -44,6 +44,7 @@ Route::controller(PerusahaanController::class)->group(function () {
     Route::get('/perusahaan/detail/{id}', 'viewdetail')->name('detailperusahaan');
     Route::get('/perusahaan/detail', 'detail')->name('detail');
     Route::get('/perusahaan/Daftar-Karyawan', 'viewkaryawan')->name('perusahaan');
+    Route::get('/perusahaan/Daftar-Review-Karyawan', 'viewkaryawanLama')->name('review');
 });
 
 Route::controller(KaryawanController::class)->group(function () {
@@ -58,7 +59,11 @@ Route::controller(AdminController::class)->group(function () {
 
 Route::controller(RiwayatController::class)->group(function () {
     Route::post('/karyawan/Pengajuan-Pemberhentian/{id}/action', 'pengajuan')->name('karyawan.berhenti');
-    Route::post('/karyawan/Batal-Pemberhentian/{nik}/action', 'batal')->name('karyawan.batal');
+    Route::post('/karyawan/Batal-Pemberhentian/{id}/action', 'batal')->name('karyawan.batal');
+    Route::post('/karyawan/Pemberhentian/{id}/action', 'pemberhentian')->name('perusahaan.pecat');
+    Route::get('/karyawan/Review', 'review')->name('perusahaan.review');
+    Route::post('/karyawan/ReviewBaik/{id}/action', 'reviewBaik')->name('perusahaan.baik');
+    Route::post('/karyawan/ReviewBuruk/{id}/action', 'reviewBuruk')->name('perusahaan.buruk');
 });
 
 Route::get('/logout', [

@@ -37,23 +37,46 @@ class RiwayatController extends Controller
             'status' => 'masih bekerja',
         ]);
 
-        return redirect()->route('karyawan.view', $karyawan_id);
+        if ($user->role == "karyawan") {
+            $karyawan_id = Karyawan::where('nik', $user->niknpwp)->value('id');
+            return redirect()->route('karyawan.view', $karyawan_id);
+        } else {
+            return redirect()->route('perusahaan');
+        }
     }
 
-    public function pemberhentian($nik, $status)
+    public function pemberhentian($id)
     {
-        $karyawan = Riwayat::where('nik', $nik)->where('status', 'masih bekerja')->first();
-
-        $user = Auth::user();
-        $karyawan_id = Karyawan::where('nik', $user->niknpwp)->value('id');
-
+        $karyawan = Riwayat::where('id', $id)->first();
         $tahun_berhenti = date('Y');
 
         $karyawan->update([
-            'status' => $status,
+            'status' => "tunggu review",
             'akhir' => $tahun_berhenti,
         ]);
 
-        return redirect()->route('karyawan.view', $karyawan_id)->with('success', '');
+        return redirect()->route('perusahaan');
+    }
+
+    public function reviewBaik($id)
+    {
+        $karyawan = Riwayat::where('id', $id)->first();
+
+        $karyawan->update([
+            'status' => "Baik",
+        ]);
+
+        return redirect()->route('perusahaan');
+    }
+
+    public function reviewBuruk($id)
+    {
+        $karyawan = Riwayat::where('id', $id)->first();
+
+        $karyawan->update([
+            'status' => "Buruk",
+        ]);
+
+        return redirect()->route('perusahaan');
     }
 }
