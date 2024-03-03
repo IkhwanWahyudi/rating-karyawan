@@ -98,6 +98,6 @@
                 </form>
             </div>
         </div>
-        <img src="{{ asset('assets/login-page.jpeg') }}" class="w-full object-cover -z-10" alt="">
+        <img src="{{ asset('assets/regis-page.jpg') }}" class="w-full object-cover -z-10" alt="">
     </div>
 @endsection
